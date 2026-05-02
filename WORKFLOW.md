@@ -17,10 +17,9 @@ workspace:
   root: ~/code/cursed-museum-workspaces
 hooks:
   after_create: |
-    git clone --depth 1 "https://oauth2:${GITHUB_TOKEN}@github.com/yoh91asakura/cursed-museum.git" .
+    git clone --depth 1 https://github.com/yoh91asakura/cursed-museum.git .
     git config user.name "Felix Girardin (via Codex)"
     git config user.email "girardin.felix@gmail.com"
-    git remote set-url origin "https://oauth2:${GITHUB_TOKEN}@github.com/yoh91asakura/cursed-museum.git"
 agent:
   max_concurrent_agents: 3
   max_turns: 20
