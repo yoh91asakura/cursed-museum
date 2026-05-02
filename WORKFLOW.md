@@ -19,10 +19,8 @@ polling:
 workspace:
   root: ~/code/cursed-museum-workspaces
 hooks:
-  # TODO: remplacer "<REPO_URL>" par l'URL git de ce projet une fois poussé sur GitHub.
-  # Ex: git@github.com:girardin/cursed-museum.git
   after_create: |
-    git clone --depth 1 <REPO_URL> .
+    git clone --depth 1 https://github.com/yoh91asakura/cursed-museum.git .
 agent:
   max_concurrent_agents: 3
   max_turns: 20
