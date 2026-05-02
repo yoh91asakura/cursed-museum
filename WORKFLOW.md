@@ -24,7 +24,7 @@ agent:
   max_concurrent_agents: 3
   max_turns: 20
 codex:
-  command: codex --profile deepseek_direct --config shell_environment_policy.inherit=all app-server
+  command: codex --profile deepseek_litellm --config shell_environment_policy.inherit=all app-server
   approval_policy: never
   thread_sandbox: workspace-write
   turn_sandbox_policy:
