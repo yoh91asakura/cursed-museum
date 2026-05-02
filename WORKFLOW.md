@@ -6,14 +6,11 @@ tracker:
   active_states:
     - Todo
     - In Progress
-    - Merging
-    - Rework
+    - In Review
   terminal_states:
-    - Closed
-    - Cancelled
+    - Done
     - Canceled
     - Duplicate
-    - Done
 polling:
   interval_ms: 5000
 workspace:
@@ -107,16 +104,17 @@ The agent should be able to talk to Linear, either via a configured Linear MCP s
 - Move status only when the matching quality bar is met.
 - Operate autonomously end-to-end unless blocked by missing requirements, secrets, or permissions.
 
-## Status routing
+## Status routing (mapped to MEM team states)
 
 - `Backlog` -> out of scope; do not modify.
 - `Todo` -> immediately move to `In Progress`, create workpad, start.
   - Special case: if a PR is already attached, run full PR feedback sweep first.
 - `In Progress` -> continue execution from current workpad.
-- `Human Review` -> wait, do not code.
-- `Merging` -> run `.codex/skills/land/SKILL.md` (do not call `gh pr merge` directly).
-- `Rework` -> close PR, delete workpad, fresh branch, restart.
+- `In Review` -> human is reviewing; wait, do not code, do not merge.
 - `Done` -> shut down.
+- `Canceled` / `Duplicate` -> shut down.
+
+When work is implemented, branch pushed, PR opened and CI green: move ticket to `In Review`. The human will then review and either move to `Done` or back to `Todo` with comments for rework.
 
 ## Tests
 

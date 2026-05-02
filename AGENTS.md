@@ -82,12 +82,12 @@ These come from `DESIGN.md` §3.2. **Violating one of these is a blocker** — f
 
 ## 4. Linear ticket workflow
 
-This repo uses Symphony to dispatch agents based on Linear tickets. The workflow contract is in `WORKFLOW.md`. The state machine you must follow:
+This repo uses Symphony to dispatch agents based on Linear tickets. The workflow contract is in `WORKFLOW.md`. State machine (mapped to the MEM team's actual states):
 
 ```
-Backlog → Todo → In Progress → Human Review → Merging → Done
-                                     ↓ (rework requested)
-                                  Rework → In Progress → ...
+Backlog → Todo → In Progress → In Review → Done
+                       ↑                ↓ (human asks for rework)
+                       └────────────────┘
 ```
 
 ### 4.1 Status routing
@@ -95,10 +95,11 @@ Backlog → Todo → In Progress → Human Review → Merging → Done
 - **`Backlog`** → do not modify, wait for human to move to `Todo`.
 - **`Todo`** → immediately move to `In Progress`, create `## Codex Workpad` comment, start work.
 - **`In Progress`** → continue from existing workpad.
-- **`Human Review`** → do nothing, wait.
-- **`Merging`** → run the `land` skill (do not call `gh pr merge` directly).
-- **`Rework`** → close existing PR, delete workpad, fresh branch, start over.
+- **`In Review`** → do nothing, wait. The human reviews the PR and either moves to `Done` (merge) or back to `Todo` with comments for rework.
 - **`Done`** → terminal, shut down.
+- **`Canceled` / `Duplicate`** → terminal, shut down.
+
+When you complete implementation (branch pushed, PR opened, CI green), move the ticket from `In Progress` to `In Review`. **Do not merge yourself.**
 
 ### 4.2 Workpad
 
