@@ -90,16 +90,46 @@ Backlog → Todo → In Progress → In Review → Done
                        └────────────────┘
 ```
 
-### 4.1 Status routing
+### 4.1 Status routing — STRICT RULES
 
-- **`Backlog`** → do not modify, wait for human to move to `Todo`.
-- **`Todo`** → immediately move to `In Progress`, create `## Codex Workpad` comment, start work.
-- **`In Progress`** → continue from existing workpad.
-- **`In Review`** → do nothing, wait. The human reviews the PR and either moves to `Done` (merge) or back to `Todo` with comments for rework.
-- **`Done`** → terminal, shut down.
-- **`Canceled` / `Duplicate`** → terminal, shut down.
+**The ONLY state transitions you are allowed to perform on YOUR assigned ticket:**
 
-When you complete implementation (branch pushed, PR opened, CI green), move the ticket from `In Progress` to `In Review`. **Do not merge yourself.**
+1. `Todo` → `In Progress` (when you start implementing)
+2. `In Progress` → `In Review` (when the PR is opened and CI is green)
+
+**Forbidden actions (these are critical bugs):**
+
+- ❌ **NEVER move a ticket to `Backlog`**. Backlog is a human-only state. If you cannot work on a ticket, post a blocker note in the workpad and exit. Do NOT change state.
+- ❌ **NEVER move a ticket to `Done`, `Canceled`, or `Duplicate`**. The human reviewer closes tickets, not you.
+- ❌ **NEVER modify other tickets** (only touch the one Symphony assigned to you).
+- ❌ **NEVER move a ticket from `In Review` back to anything**. Once you reach `In Review`, you are done.
+
+### 4.2 Dependency handling
+
+Each ticket description has a `## Dependencies` section listing CRSD-XXX prefixed prerequisites. **Before starting implementation**:
+
+1. Find those CRSD-XXX in Linear by searching ticket titles (titles start with `CRSD-XXX - `).
+2. Check each dependency's state.
+3. If ANY dependency is not `Done` (or `In Review` if the dependency's PR is mergeable), **this ticket is blocked**.
+
+When blocked, **do not implement anything**. Instead:
+
+- Update your workpad with a `### Blocker` section listing the missing deps.
+- End the agent run. Symphony or a human will retry later.
+
+This is the SAFE failure mode. Better to refuse with a clean blocker note than to write code on top of unmet assumptions.
+
+### 4.3 If state is `In Review`
+
+Do nothing, wait. The human reviews the PR and either moves to `Done` (merge) or back to `Todo` with review comments for rework.
+
+### 4.4 Linear GraphQL gotchas
+
+When using the `linear_graphql` tool to query Linear:
+
+- Linear's schema treats team/issue identifiers as `ID!` type, not `String!`. If you write `$teamId: String!` in a query, it fails with "Variable used in position expecting type ID."
+- Field name reminders: searching tickets uses `issueSearch(query: "...")`, not `term:`. Filtering uses `filter: { ... }` with operators like `{eq: "..."}`, `{nin: [...]}`.
+- When in doubt, query the schema first: `{ __schema { types { name } } }`.
 
 ### 4.2 Workpad
 

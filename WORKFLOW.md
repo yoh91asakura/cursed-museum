@@ -24,7 +24,7 @@ agent:
   max_concurrent_agents: 3
   max_turns: 20
 codex:
-  command: codex --profile deepseek --config shell_environment_policy.inherit=all app-server
+  command: codex --profile deepseek_direct --config shell_environment_policy.inherit=all app-server
   approval_policy: never
   thread_sandbox: workspace-write
   turn_sandbox_policy:
@@ -108,15 +108,28 @@ The agent should be able to talk to Linear, either via a configured Linear MCP s
 
 ## Status routing (mapped to MEM team states)
 
-- `Backlog` -> out of scope; do not modify.
-- `Todo` -> immediately move to `In Progress`, create workpad, start.
-  - Special case: if a PR is already attached, run full PR feedback sweep first.
-- `In Progress` -> continue execution from current workpad.
-- `In Review` -> human is reviewing; wait, do not code, do not merge.
-- `Done` -> shut down.
-- `Canceled` / `Duplicate` -> shut down.
+**The ONLY state transitions you are allowed to perform on the ticket assigned to you:**
 
-When work is implemented, branch pushed, PR opened and CI green: move ticket to `In Review`. The human will then review and either move to `Done` or back to `Todo` with comments for rework.
+1. `Todo` -> `In Progress` (when you start work)
+2. `In Progress` -> `In Review` (when PR is opened and CI is green)
+
+**Forbidden** (any of these is a critical bug — DO NOT do them):
+- ❌ NEVER move a ticket to `Backlog`. Backlog is a human-only state for deferred work.
+- ❌ NEVER move a ticket to `Done`, `Canceled`, or `Duplicate`. The human handles closure.
+- ❌ NEVER move a ticket assigned to you to a state other than `In Progress` or `In Review`.
+- ❌ NEVER modify or move OTHER tickets (only touch the one Symphony assigned to you).
+
+**If you cannot complete the work** (dependency unmet, missing tool, blocked by external resource):
+- Do NOT change the ticket state.
+- Post a `### Blocker` section in your `## Codex Workpad` comment with: what is blocked, why, what would unblock.
+- Exit the agent run with that as your final message. Symphony will retry later or a human will resolve.
+
+**For dependency checks** specifically: if your ticket says `## Dependencies` includes other CRSD-XXX IDs, before starting implementation:
+1. Search Linear for those CRSD-XXX titles to find their MEM-N identifiers.
+2. Check their state. If any are NOT `Done`, this ticket is blocked.
+3. Post the blocker in the workpad. Do NOT proceed with implementation.
+
+When a human moves the dependency to `Done`, Symphony will pick this ticket up again and the next attempt will pass dependency check.
 
 ## Tests
 
