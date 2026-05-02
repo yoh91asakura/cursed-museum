@@ -1,0 +1,31 @@
+# Godot
+.godot/
+*.translation
+export.cfg
+export_presets.cfg
+.import/
+
+# Build outputs
+build/
+exports/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets / local
+.env
+.env.local
+*.local
+
+# Claude / agent caches
+.claude/
+.codex/
+
+# Symphony local state
+.symphony/
