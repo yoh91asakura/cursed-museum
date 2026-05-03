@@ -1,0 +1,19 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since various changes are only going to be applied right after saving.
+
+config_version=5
+
+[application]
+
+config/name="Cursed Museum"
+config/features=PackedStringArray("4.6", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+SaveSystem="*res://autoload/SaveSystem.gd"
+
+[gdunit4]
+
+settings/test_lookup_folder="res://tests"
