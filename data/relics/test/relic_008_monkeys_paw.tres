@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RelicData" load_steps=3 format=1 uid="uid://rel001test008"]
+
+[ext_resource type="Script" path="res://scripts/RelicData.gd" id="1_relicdata"]
+[ext_resource type="Script" path="res://scripts/EffectAction.gd" id="2_action"]
+
+[sub_resource type="Resource" id="action_res_1"]
+script = ExtResource("2_action")
+action_id = &"double_damage_halve_hp"
+
+[resource]
+script = ExtResource("1_relicdata")
+id = &"monkeys_paw"
+display_name = "Monkey's Paw"
+rarity = 4
+description = "All allies deal double damage, but start each battle at 50% HP."
+triggers = Array[int]([0])
+actions = Array[Resource]([SubResource("action_res_1")])
+icon = null

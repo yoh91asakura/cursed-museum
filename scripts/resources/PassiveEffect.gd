@@ -1,0 +1,2 @@
+class_name PassiveEffect
+extends Resource

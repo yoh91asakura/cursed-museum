@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ReliquaireDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ReliquaireDefinition.gd" id="1_rare"]
+
+[resource]
+script = ExtResource("1_rare")
+id = "rare"
+display_name = "Reliquaire Rare"
+essence_cost = 2500
+fame_cost = 0
+min_rarity = 2
+guaranteed_rarity = 2
+pity_count = 0
+pity_rarity = -1
+description = "Contains 1 non-unlocked Rare+ artefact. Rare+ guaranteed."

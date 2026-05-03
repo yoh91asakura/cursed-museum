@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3 uid="uid://crd001test008"]
+
+[ext_resource type="Script" path="res://scripts/CardData.gd" id="1_carddata"]
+[ext_resource type="Script" path="res://scripts/PassiveEffect.gd" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/UltimateAbility.gd" id="3_ultimate"]
+
+[sub_resource type="Resource" id="passive_res"]
+script = ExtResource("2_passive")
+effect_id = &"void_drain"
+description = "On kill: drain 5% max HP from all enemies."
+
+[sub_resource type="Resource" id="ultimate_res"]
+script = ExtResource("3_ultimate")
+ability_id = &"absolute_zero"
+display_name = "Absolute Zero"
+description = "Deal 350% ATK to the highest-HP enemy. True damage, ignores armor."
+cooldown = 6
+
+[resource]
+script = ExtResource("1_carddata")
+id = &"void_collapse"
+display_name = "Void Collapse"
+rarity = 2
+aspect = 4
+level = 1
+base_hp = 95
+base_attack = 65
+base_defense = 8
+base_speed = 65
+crit_chance = 0.08
+crit_multiplier = 2.5
+passive = SubResource("passive_res")
+ultimate = SubResource("ultimate_res")
+portrait = null
+animation_set = null

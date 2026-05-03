@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3 uid="uid://crd001test002"]
+
+[ext_resource type="Script" path="res://scripts/CardData.gd" id="1_carddata"]
+[ext_resource type="Script" path="res://scripts/PassiveEffect.gd" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/UltimateAbility.gd" id="3_ultimate"]
+
+[sub_resource type="Resource" id="passive_res"]
+script = ExtResource("2_passive")
+effect_id = &"hustle_mindset"
+description = "Every 3rd attack deals bonus damage equal to 10% target's max HP."
+
+[sub_resource type="Resource" id="ultimate_res"]
+script = ExtResource("3_ultimate")
+ability_id = &"sigma_strike"
+display_name = "Sigma Strike"
+description = "Deal 300% ATK to the lowest-HP enemy. If this kills, reset cooldown."
+cooldown = 5
+
+[resource]
+script = ExtResource("1_carddata")
+id = &"sigma_grindset"
+display_name = "Sigma Grindset"
+rarity = 0
+aspect = 1
+level = 1
+base_hp = 100
+base_attack = 45
+base_defense = 15
+base_speed = 60
+crit_chance = 0.10
+crit_multiplier = 1.75
+passive = SubResource("passive_res")
+ultimate = SubResource("ultimate_res")
+portrait = null
+animation_set = null

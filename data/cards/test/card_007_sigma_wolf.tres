@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3 uid="uid://crd001test007"]
+
+[ext_resource type="Script" path="res://scripts/CardData.gd" id="1_carddata"]
+[ext_resource type="Script" path="res://scripts/PassiveEffect.gd" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/UltimateAbility.gd" id="3_ultimate"]
+
+[sub_resource type="Resource" id="passive_res"]
+script = ExtResource("2_passive")
+effect_id = &"lone_wolf"
+description = "+20% ATK when no ally has the same Aspect."
+
+[sub_resource type="Resource" id="ultimate_res"]
+script = ExtResource("3_ultimate")
+ability_id = &"pack_hunt"
+display_name = "Pack Hunt"
+description = "Deal 220% ATK. All Sigma allies gain +30% ATK for 2 turns."
+cooldown = 5
+
+[resource]
+script = ExtResource("1_carddata")
+id = &"sigma_wolf"
+display_name = "Sigma Wolf"
+rarity = 2
+aspect = 1
+level = 1
+base_hp = 110
+base_attack = 60
+base_defense = 18
+base_speed = 70
+crit_chance = 0.12
+crit_multiplier = 2.0
+passive = SubResource("passive_res")
+ultimate = SubResource("ultimate_res")
+portrait = null
+animation_set = null
