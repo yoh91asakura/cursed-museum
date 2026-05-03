@@ -1,0 +1,17 @@
+; Engine configuration file for Cursed Museum
+; See DESIGN.md §10 for full project layout
+
+config_version=5
+
+[application]
+
+config/name="Cursed Museum"
+config/version="0.1.0"
+
+[autoload]
+
+SaveSystem="*res://autoload/SaveSystem.gd"
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
