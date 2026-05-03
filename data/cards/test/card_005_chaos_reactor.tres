@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3 uid="uid://crd001test005"]
+
+[ext_resource type="Script" path="res://scripts/CardData.gd" id="1_carddata"]
+[ext_resource type="Script" path="res://scripts/PassiveEffect.gd" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/UltimateAbility.gd" id="3_ultimate"]
+
+[sub_resource type="Resource" id="passive_res"]
+script = ExtResource("2_passive")
+effect_id = &"chaos_ripple"
+description = "On hit: 30% chance to deal 10% ATK splash to adjacent enemies."
+
+[sub_resource type="Resource" id="ultimate_res"]
+script = ExtResource("3_ultimate")
+ability_id = &"anarchy_dump"
+display_name = "Anarchy Dump"
+description = "Deal 180% ATK to random enemies 3 times. Each hit applies 1 Stagger."
+cooldown = 4
+
+[resource]
+script = ExtResource("1_carddata")
+id = &"chaos_reactor"
+display_name = "Chaos Reactor"
+rarity = 1
+aspect = 0
+level = 1
+base_hp = 130
+base_attack = 30
+base_defense = 25
+base_speed = 45
+crit_chance = 0.08
+crit_multiplier = 1.6
+passive = SubResource("passive_res")
+ultimate = SubResource("ultimate_res")
+portrait = null
+animation_set = null

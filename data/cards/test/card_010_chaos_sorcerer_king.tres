@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=1 uid="uid://crd001test010"]
+
+[ext_resource type="Script" path="res://scripts/CardData.gd" id="1_carddata"]
+[ext_resource type="Script" path="res://scripts/PassiveEffect.gd" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/UltimateAbility.gd" id="3_ultimate"]
+
+[sub_resource type="Resource" id="passive_res"]
+script = ExtResource("2_passive")
+effect_id = &"chaos_royalty"
+description = "On phase change: gain +15% to a random stat (HP/ATK/DEF/SPD) for rest of battle."
+
+[sub_resource type="Resource" id="ultimate_res"]
+script = ExtResource("3_ultimate")
+ability_id = &"reign_of_chaos"
+display_name = "Reign of Chaos"
+description = "Deal 500% ATK split randomly among all enemies. Any overkill damage chains to next target."
+cooldown = 8
+
+[resource]
+script = ExtResource("1_carddata")
+id = &"chaos_sorcerer_king"
+display_name = "Chaos Sorcerer King"
+rarity = 3
+aspect = 0
+level = 1
+base_hp = 150
+base_attack = 48
+base_defense = 30
+base_speed = 42
+crit_chance = 0.10
+crit_multiplier = 1.8
+passive = SubResource("passive_res")
+ultimate = SubResource("ultimate_res")
+portrait = null
+animation_set = null

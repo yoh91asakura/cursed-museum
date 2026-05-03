@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RelicData" load_steps=3 format=1 uid="uid://rel001test006"]
+
+[ext_resource type="Script" path="res://scripts/RelicData.gd" id="1_relicdata"]
+[ext_resource type="Script" path="res://scripts/EffectAction.gd" id="2_action"]
+
+[sub_resource type="Resource" id="action_res_1"]
+script = ExtResource("2_action")
+action_id = &"revive_ally_once"
+
+[resource]
+script = ExtResource("1_relicdata")
+id = &"phoenix_feather"
+display_name = "Phoenix Feather"
+rarity = 2
+description = "The first time an ally would be defeated, revive them with 50% HP (once per battle)."
+triggers = Array[int]([6])
+actions = Array[Resource]([SubResource("action_res_1")])
+icon = null

@@ -1,18 +1,30 @@
-# Godot
+# Godot 4 generated/editor state
 .godot/
 *.translation
 export.cfg
-export_presets.cfg
 .import/
+*.import
 
-# Build outputs
+# Godot export artifacts
+export_presets.cfg
+!export_presets.cfg
 build/
-exports/
+exports/**
+!exports/**/
+!exports/**/.gitkeep
+*.pck
+*.zip
+*.exe
+*.x86_64
+*.app/
+*.dmg
 
-# OS
+# Local/editor noise
 .DS_Store
 Thumbs.db
 desktop.ini
+*.tmp
+*.log
 
 # IDE
 .vscode/
@@ -29,3 +41,6 @@ desktop.ini
 
 # Symphony local state
 .symphony/
+
+# Dependency/vendor caches
+addons/**/.cache/

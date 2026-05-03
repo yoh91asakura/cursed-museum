@@ -32,11 +32,6 @@ Voir `DESIGN.md` §12 pour la roadmap, §13 pour le backlog Symphony.
 
 ## Setup dev
 
-> **Le projet n'est pas encore initialisé.**
-> Le premier ticket Symphony à exécuter est **CRSD-001** (init Godot project).
-
-Une fois initialisé :
-
 ```bash
 git clone <repo-url>
 cd cursed-museum
@@ -47,6 +42,10 @@ cd cursed-museum
 # Lancer tests
 godot --headless --script addons/gdUnit4/bin/gdUnit4.gd --add-only res://tests
 ```
+
+Le projet Godot est initialisé dans `project.godot`. La scène de démarrage
+est `res://scenes/main/Main.tscn`; les dossiers de code, données, scènes,
+assets, scripts et tests suivent `DESIGN.md` §10.2.
 
 ## Lancer Symphony sur ce projet
 
