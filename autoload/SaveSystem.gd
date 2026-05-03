@@ -5,23 +5,36 @@ extends Node
 ## AES-256-CBC encrypted JSON, with SHA-256 checksum and atomic writes.
 ##
 ## DESIGN.md §10.4: key derived from Steam ID (fallback: machine GUID).
+##
+## CRSD-025: built-in version migration infrastructure.
+## Migrations are registered via register_migration(from_version, handler).
+## On load, migrations run sequentially from the save's version up to SAVE_VERSION.
+## v2 mobile is dead, but the format stays ready to evolve.
 
 const SAVE_VERSION: int = 3
 const SAVE_FILENAME: String = "save.dat"
 const TMP_SUFFIX: String = ".tmp"
+const MIGRATION_LOG_KEY: String = "_migration_log"
 
 var _save_path: String = ""
 var _aes_key: PackedByteArray = PackedByteArray()
+var _migrations: Dictionary = {}  # int -> Callable
 
 
 # ------------------------------------------------------------------ Lifetime
 func _ready() -> void:
 	_ensure_save_dir()
 	_derive_key()
+	_register_builtin_migrations()
 	# Do NOT auto-load here — Main.tscn boot sequence calls load_save() explicitly.
 
 
 # --------------------------------------------------------------- Public API
+## Register a migration handler that transforms data from_version into from_version+1.
+func register_migration(from_version: int, handler: Callable) -> void:
+	_migrations[from_version] = handler
+
+
 func save_exists() -> bool:
 	return FileAccess.file_exists(_save_path)
 
@@ -81,6 +94,7 @@ func load_save() -> Variant:
 	"""
 	Returns Dictionary on success, null on failure or no save.
 	Caller is responsible for validating the returned data.
+	Migrations are applied automatically before returning.
 	"""
 	if not save_exists():
 		return null
@@ -132,6 +146,11 @@ func load_save() -> Variant:
 		printerr("SaveSystem: checksum mismatch — save may be corrupted.")
 		return null
 
+	# Apply pending migrations before returning
+	data = _apply_migrations(data)
+	if data == null:
+		return null
+
 	return data
 
 
@@ -147,6 +166,60 @@ func delete_save() -> Error:
 	return err
 
 
+# -------------------------------------------------------- Migration system
+func _apply_migrations(data: Dictionary) -> Variant:
+	"""Run sequential migrations from data.version up to SAVE_VERSION. Returns migrated dict or null on failure."""
+	var result := data.duplicate(true)
+
+	if not result.has("version") or not result["version"] is int:
+		printerr("SaveSystem: save missing version field; cannot migrate.")
+		return null
+
+	var from_version: int = result["version"]
+	var log: Array = result.get(MIGRATION_LOG_KEY, [])
+
+	while from_version < SAVE_VERSION:
+		var next_version := from_version + 1
+		if not _migrations.has(from_version):
+			printerr("SaveSystem: no migration handler for v%d -> v%d. Aborting." % [from_version, next_version])
+			return null
+
+		result = _migrations[from_version].call(result)
+		result["version"] = next_version
+		log.append("v%d->v%d at %d" % [from_version, next_version, Time.get_unix_time_from_system()])
+		from_version = next_version
+
+	result[MIGRATION_LOG_KEY] = log
+	return result
+
+
+func _register_builtin_migrations() -> void:
+	# v2 mobile is dead; register a no-op migration v2 -> v3
+	# that adds the _migration_log and ensures the version field.
+	register_migration(2, _migrate_v2_to_v3)
+
+
+func _migrate_v2_to_v3(data: Dictionary) -> Dictionary:
+	# v2 was a mobile gacha format — dead. We just ensure the
+	# top-level keys from DESIGN.md §10.4 exist as empty stubs.
+	return {
+		"player": data.get("player", {
+			"level": 1, "xp": 0, "prestige_stars": 0, "ascension_max": 0,
+			"currencies": {"essence": 0, "fame": 0}
+		}),
+		"inventory": data.get("inventory", {
+			"cards_unlocked": [], "meta_relics_unlocked": [], "curators_unlocked": []
+		}),
+		"museum": data.get("museum", {
+			"tier": 1, "slots": [], "rooms": []
+		}),
+		"decks": data.get("decks", []),
+		"settings": data.get("settings", {"sound": 0.8, "music": 0.6, "battle_speed": 1, "screen_shake": 1.0}),
+		"active_run": data.get("active_run", null),
+		MIGRATION_LOG_KEY: data.get(MIGRATION_LOG_KEY, []),
+	}
+
+
 # ------------------------------------------------------------- Internals
 func _ensure_save_dir() -> void:
 	# On desktop, "user://" is a writable per-game folder.
@@ -158,7 +231,7 @@ func _ensure_save_dir() -> void:
 
 func _derive_key() -> void:
 	# Try Steam ID first; fall back to machine GUID (DESIGN.md §10.4).
-	# In practice SteamBridge will be02 the canonical source once available.
+	# In practice SteamBridge will be the canonical source once available.
 	var key_material := OS.get_unique_id()
 	# Harden: hash the material to get exactly 32 bytes for AES-256.
 	_aes_key = key_material.sha256_buffer()
