@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ReliquaireDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ReliquaireDefinition.gd" id="1_mythical"]
+
+[resource]
+script = ExtResource("1_mythical")
+id = "mythical"
+display_name = "Reliquaire Mythical"
+essence_cost = 50000
+fame_cost = 5
+min_rarity = 5
+guaranteed_rarity = 5
+pity_count = 0
+pity_rarity = -1
+description = "Contains 1 non-unlocked Mythical artefact. Mythical guaranteed."
