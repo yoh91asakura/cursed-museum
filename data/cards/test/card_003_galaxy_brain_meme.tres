@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3 uid="uid://crd001test003"]
+
+[ext_resource type="Script" path="res://scripts/CardData.gd" id="1_carddata"]
+[ext_resource type="Script" path="res://scripts/PassiveEffect.gd" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/UltimateAbility.gd" id="3_ultimate"]
+
+[sub_resource type="Resource" id="passive_res"]
+script = ExtResource("2_passive")
+effect_id = &"big_brain"
+description = "+15% crit chance against enemies with higher HP."
+
+[sub_resource type="Resource" id="ultimate_res"]
+script = ExtResource("3_ultimate")
+ability_id = &"neural_overload"
+display_name = "Neural Overload"
+description = "Deal 150% ATK to all enemies. Applies -20% speed debuff for 2 turns."
+cooldown = 4
+
+[resource]
+script = ExtResource("1_carddata")
+id = &"galaxy_brain_meme"
+display_name = "Galaxy Brain Meme"
+rarity = 0
+aspect = 2
+level = 1
+base_hp = 90
+base_attack = 50
+base_defense = 10
+base_speed = 55
+crit_chance = 0.15
+crit_multiplier = 2.0
+passive = SubResource("passive_res")
+ultimate = SubResource("ultimate_res")
+portrait = null
+animation_set = null

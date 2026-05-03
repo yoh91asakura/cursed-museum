@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=1 uid="uid://crd001test009"]
+
+[ext_resource type="Script" path="res://scripts/CardData.gd" id="1_carddata"]
+[ext_resource type="Script" path="res://scripts/PassiveEffect.gd" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/UltimateAbility.gd" id="3_ultimate"]
+
+[sub_resource type="Resource" id="passive_res"]
+script = ExtResource("2_passive")
+effect_id = &"singularity"
+description = "Crits grant +5% ATK permanently (stacks)."
+
+[sub_resource type="Resource" id="ultimate_res"]
+script = ExtResource("3_ultimate")
+ability_id = &"galaxy_implosion"
+display_name = "Galaxy Implosion"
+description = "Deal 400% ATK to all enemies. Destroys all stagger on targets for bonus +50% damage each."
+cooldown = 7
+
+[resource]
+script = ExtResource("1_carddata")
+id = &"galaxy_destroyer"
+display_name = "Galaxy Destroyer"
+rarity = 3
+aspect = 2
+level = 1
+base_hp = 140
+base_attack = 55
+base_defense = 22
+base_speed = 48
+crit_chance = 0.12
+crit_multiplier = 2.0
+passive = SubResource("passive_res")
+ultimate = SubResource("ultimate_res")
+portrait = null
+animation_set = null

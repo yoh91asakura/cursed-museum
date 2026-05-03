@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RelicData" load_steps=3 format=3 uid="uid://rel001test002"]
+
+[ext_resource type="Script" path="res://scripts/RelicData.gd" id="1_relicdata"]
+[ext_resource type="Script" path="res://scripts/EffectAction.gd" id="2_action"]
+
+[sub_resource type="Resource" id="action_res_1"]
+script = ExtResource("2_action")
+action_id = &"boost_crit_all"
+
+[resource]
+script = ExtResource("1_relicdata")
+id = &"lucky_rabbit_foot"
+display_name = "Lucky Rabbit's Foot"
+rarity = 0
+description = "All allies gain +8% crit chance."
+triggers = Array[int]([0])
+actions = Array[Resource]([SubResource("action_res_1")])
+icon = null
