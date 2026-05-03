@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3 uid="uid://crd001test001"]
+
+[ext_resource type="Script" path="res://scripts/CardData.gd" id="1_carddata"]
+[ext_resource type="Script" path="res://scripts/PassiveEffect.gd" id="2_passive"]
+[ext_resource type="Script" path="res://scripts/UltimateAbility.gd" id="3_ultimate"]
+
+[sub_resource type="Resource" id="passive_res"]
+script = ExtResource("2_passive")
+effect_id = &"curse_of_ages"
+description = "On hit: 20% chance to apply -10% speed for 3s."
+
+[sub_resource type="Resource" id="ultimate_res"]
+script = ExtResource("3_ultimate")
+ability_id = &"ancient_echo"
+display_name = "Ancient Echo"
+description = "Deal 200% ATK to all enemies. Applies 2 Stagger to the primary target."
+cooldown = 4
+
+[resource]
+script = ExtResource("1_carddata")
+id = &"ancient_copypasta"
+display_name = "Ancient Copypasta"
+rarity = 0
+aspect = 3
+level = 1
+base_hp = 120
+base_attack = 35
+base_defense = 20
+base_speed = 40
+crit_chance = 0.05
+crit_multiplier = 1.5
+passive = SubResource("passive_res")
+ultimate = SubResource("ultimate_res")
+portrait = null
+animation_set = null

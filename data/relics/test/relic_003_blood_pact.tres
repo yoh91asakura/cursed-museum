@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RelicData" load_steps=3 format=1 uid="uid://rel001test003"]
+
+[ext_resource type="Script" path="res://scripts/RelicData.gd" id="1_relicdata"]
+[ext_resource type="Script" path="res://scripts/EffectAction.gd" id="2_action"]
+
+[sub_resource type="Resource" id="action_res_1"]
+script = ExtResource("2_action")
+action_id = &"heal_on_kill"
+
+[resource]
+script = ExtResource("1_relicdata")
+id = &"blood_pact"
+display_name = "Blood Pact"
+rarity = 1
+description = "On kill: heal the lowest-HP ally by 15% max HP."
+triggers = Array[int]([3])
+actions = Array[Resource]([SubResource("action_res_1")])
+icon = null

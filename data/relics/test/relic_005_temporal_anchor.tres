@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RelicData" load_steps=3 format=1 uid="uid://rel001test005"]
+
+[ext_resource type="Script" path="res://scripts/RelicData.gd" id="1_relicdata"]
+[ext_resource type="Script" path="res://scripts/EffectAction.gd" id="2_action"]
+
+[sub_resource type="Resource" id="action_res_1"]
+script = ExtResource("2_action")
+action_id = &"reduce_ult_cooldowns"
+
+[resource]
+script = ExtResource("1_relicdata")
+id = &"temporal_anchor"
+display_name = "Temporal Anchor"
+rarity = 2
+description = "On turn start: reduce all Ultimate cooldowns by 1 (once per battle)."
+triggers = Array[int]([1])
+actions = Array[Resource]([SubResource("action_res_1")])
+icon = null
