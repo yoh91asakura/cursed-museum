@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ReliquaireDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ReliquaireDefinition.gd" id="1_epic"]
+
+[resource]
+script = ExtResource("1_epic")
+id = "epic"
+display_name = "Reliquaire Epic"
+essence_cost = 12500
+fame_cost = 0
+min_rarity = 3
+guaranteed_rarity = 3
+pity_count = 10
+pity_rarity = 4
+description = "Contains 1 non-unlocked Epic+ artefact. Epic+ guaranteed, Legendary guaranteed every 10."
