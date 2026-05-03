@@ -12,6 +12,7 @@ config/features=PackedStringArray("4.6", "Forward Plus")
 [autoload]
 
 UITheme="*res://autoload/UITheme.gd"
+SteamBridge="*res://autoload/SteamBridge.gd"
 
 [display]
 
