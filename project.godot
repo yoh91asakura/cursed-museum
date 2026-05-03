@@ -1,19 +1,38 @@
 ; Engine configuration file.
-; It's best edited using the editor UI and not directly,
-; since various changes are only going to be applied right after saving.
+; Prefer editing project settings through the Godot editor.
 
 config_version=5
 
 [application]
 
 config/name="Cursed Museum"
+run/main_scene="res://scenes/main/Main.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
+UITheme="*res://autoload/UITheme.gd"
+SteamBridge="*res://autoload/SteamBridge.gd"
 SaveSystem="*res://autoload/SaveSystem.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/min_width=1280
+window/size/min_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
 
 [gdunit4]
 
 settings/test_lookup_folder="res://tests"
+
+[gui]
+
+theme/custom="res://data/ui/CursedMuseumTheme.tres"
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
+renderer/rendering_method.mobile="mobile"

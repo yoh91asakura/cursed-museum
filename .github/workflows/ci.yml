@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  GODOT_VERSION: 4.6-stable
+  GODOT_TEMPLATE_VERSION: 4.6.stable
+  GODOT_BIN: ${{ github.workspace }}/.godot/Godot_v4.6-stable_linux.x86_64
+  PROJECT_DIR: ${{ github.workspace }}
+
+jobs:
+  gdscript-lint:
+    name: Lint GDScript
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install gdtoolkit
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "gdtoolkit>=4.3,<5"
+
+      - name: Run gdformat and gdlint
+        run: scripts/ci/lint_gdscript.sh
+
+  gdunit-tests:
+    name: gdUnit4 Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Godot
+        uses: actions/cache@v4
+        with:
+          path: .godot
+          key: godot-editor-${{ runner.os }}-${{ env.GODOT_VERSION }}-${{ hashFiles('scripts/ci/install_godot.sh') }}
+
+      - name: Install Godot
+        run: scripts/ci/install_godot.sh
+
+      - name: Run gdUnit4
+        run: scripts/ci/run_gdunit.sh
+
+  linux-debug-export:
+    name: Linux Debug Export
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Godot and export templates
+        uses: actions/cache@v4
+        with:
+          path: |
+            .godot
+            ~/.local/share/godot/export_templates/${{ env.GODOT_TEMPLATE_VERSION }}
+          key: godot-export-${{ runner.os }}-${{ env.GODOT_VERSION }}-${{ hashFiles('scripts/ci/install_godot.sh') }}
+
+      - name: Install Godot and export templates
+        env:
+          INSTALL_EXPORT_TEMPLATES: "1"
+        run: scripts/ci/install_godot.sh
+
+      - name: Export Linux debug build
+        run: scripts/ci/export_linux_debug.sh
+
+      - name: Upload Linux debug artifact
+        if: hashFiles('build/linux/cursed-museum.x86_64') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: cursed-museum-linux-debug
+          path: build/linux/
+          if-no-files-found: error
